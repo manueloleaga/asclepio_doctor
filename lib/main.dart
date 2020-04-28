@@ -1,5 +1,4 @@
 import 'package:asclepio_flutter/pages/login.dart';
-import 'package:asclepio_flutter/pages/tabPages.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
@@ -13,7 +12,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: TabPages(),
+      home: Login(),
       //Login
     );
   }
