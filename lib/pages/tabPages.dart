@@ -5,6 +5,7 @@ import 'package:asclepio_flutter/utilities/constant.dart';
 import 'package:flutter/material.dart';
 
 class TabPages extends StatefulWidget {
+  static const routeName = "home";
   @override
   _TabPagesState createState() => _TabPagesState();
 }
