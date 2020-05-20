@@ -1,8 +1,18 @@
+import 'package:asclepio_flutter/components/TextInput.dart';
+import 'package:asclepio_flutter/components/randomClipper.dart';
+import 'package:asclepio_flutter/components/registerFormTitle.dart';
+import 'package:asclepio_flutter/models/registerUser.dart';
+import 'package:asclepio_flutter/pages/login.dart';
+import 'package:asclepio_flutter/services/auth.dart';
+// import 'package:asclepio_flutter/services/auth.dart';
 import 'package:asclepio_flutter/utilities/constant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
+import '../wrapper.dart';
+
 class Register extends StatefulWidget {
+  static const routeName = "/register";
   @override
   _RegisterState createState() => _RegisterState();
 }
@@ -15,135 +25,19 @@ class _RegisterState extends State<Register> {
         child: Stack(
           children: <Widget>[
             Container(
-              child: ClipPath(
-                clipper: MyClipper(),
-                child: Container(
-                  height: 300,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                    begin: Alignment.topRight,
-                    end: Alignment.bottomLeft,
-                    colors: [
-                      kMainGreenColor,
-                      Color(0xFF11249F),
-                    ],
-                  )),
-                ),
-              ),
+              child: RandomClipper(),
             ),
             Container(
-              child: Padding(
-                padding: EdgeInsets.all(30.0),
-                child: Column(
-                  children: <Widget>[
-                    Container(
-                      padding: EdgeInsets.all(5),
-                      decoration: BoxDecoration(
-                          color: kWhiteColor,
-                          borderRadius: BorderRadius.circular(10),
-                          boxShadow: [
-                            BoxShadow(
-                                color: kMainGreenColor.withOpacity(.1),
-                                blurRadius: 20.0,
-                                offset: Offset(0, 10))
-                          ]),
-                      child: Column(
-                        children: <Widget>[
-                          Container(
-                            padding: EdgeInsets.all(8.0),
-                            decoration: BoxDecoration(
-                                border: Border(
-                                    bottom:
-                                        BorderSide(color: Colors.grey[100]))),
-                            child: TextField(
-                              decoration: InputDecoration(
-                                border: InputBorder.none,
-                                hintText: "Cédula",
-                                hintStyle: TextStyle(color: Colors.grey[400]),
-                              ),
-                            ),
-                          ),
-                          Container(
-                            padding: EdgeInsets.all(8.0),
-                            decoration: BoxDecoration(
-                                border: Border(
-                                    bottom:
-                                        BorderSide(color: Colors.grey[100]))),
-                            child: TextField(
-                              decoration: InputDecoration(
-                                border: InputBorder.none,
-                                hintText: "Nombre",
-                                hintStyle: TextStyle(color: Colors.grey[400]),
-                              ),
-                            ),
-                          ),
-                          Container(
-                            padding: EdgeInsets.all(8.0),
-                            decoration: BoxDecoration(
-                                border: Border(
-                                    bottom:
-                                        BorderSide(color: Colors.grey[100]))),
-                            child: TextField(
-                              decoration: InputDecoration(
-                                border: InputBorder.none,
-                                hintText: "Apellido",
-                                hintStyle: TextStyle(color: Colors.grey[400]),
-                              ),
-                            ),
-                          ),
-                          Container(
-                            padding: EdgeInsets.all(8.0),
-                            decoration: BoxDecoration(
-                                border: Border(
-                                    bottom:
-                                        BorderSide(color: Colors.grey[100]))),
-                            child: TextField(
-                              decoration: InputDecoration(
-                                border: InputBorder.none,
-                                hintText: "Número telefonico",
-                                hintStyle: TextStyle(color: Colors.grey[400]),
-                              ),
-                            ),
-                          ),
-                          Container(
-                            padding: EdgeInsets.all(8.0),
-                            decoration: BoxDecoration(
-                                border: Border(
-                                    bottom:
-                                        BorderSide(color: Colors.grey[100]))),
-                            child: TextField(
-                              decoration: InputDecoration(
-                                border: InputBorder.none,
-                                hintText: "Exequátur",
-                                hintStyle: TextStyle(color: Colors.grey[400]),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(
-                      height: 30,
-                    ),
-                    Container(
-                      height: 50,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          gradient: LinearGradient(colors: [
-                            kMainGreenColor.withOpacity(1),
-                            kMainGreenColor.withOpacity(.6)
-                          ])),
-                      child: Center(
-                        child: Text(
-                          "Login",
-                          style: TextStyle(
-                              color: kWhiteColor, fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+              height: MediaQuery.of(context).size.height * 0.7,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  RegisterFormTitle(
+                    title: 'Registrate',
+                    backUrl: Login.routeName,
+                  ),
+                  RegisterForm(),
+                ],
               ),
             )
           ],
@@ -153,20 +47,101 @@ class _RegisterState extends State<Register> {
   }
 }
 
-class MyClipper extends CustomClipper<Path> {
+class RegisterForm extends StatefulWidget {
   @override
-  Path getClip(Size size) {
-    var path = Path();
-    path.lineTo(0, size.height - 80);
-    path.quadraticBezierTo(
-        size.width / 2, size.height, size.width, size.height - 80);
-    path.lineTo(size.width, 0);
-    path.close();
-    return path;
-  }
+  _RegisterFormState createState() => _RegisterFormState();
+}
+
+class _RegisterFormState extends State<RegisterForm> {
+  final formKey = GlobalKey<FormState>();
+  final AuthService _auth = new AuthService();
+  String error = '';
+  RegisterUser _user = new RegisterUser();
 
   @override
-  bool shouldReclip(CustomClipper<Path> oldClipper) {
-    return false;
+  Widget build(BuildContext context) {
+    return Form(
+        key: formKey,
+        child: Column(
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.all(25),
+              child: Container(
+                decoration: BoxDecoration(
+                    color: kWhiteColor,
+                    borderRadius: BorderRadius.circular(10),
+                    boxShadow: [
+                      BoxShadow(
+                          color: kMainGreenColor.withOpacity(.3),
+                          blurRadius: 20.0,
+                          offset: Offset(0, 10))
+                    ]),
+                child: Container(
+                    child: Padding(
+                  padding: EdgeInsets.all(30.0),
+                  child: Column(
+                    children: <Widget>[
+                      RoundedInput(
+                          labelText: "Email",
+                          obscureText: false,
+                          validatiorFunc: (validator) {
+                            return validator.isEmpty
+                                ? 'Ingrese el correo'
+                                : null;
+                          },
+                          onChangedFunc: (val) {
+                            setState(() => _user.email = val);
+                          }),
+                      RoundedInput(
+                          labelText: "Password",
+                          obscureText: true,
+                          validatiorFunc: (validator) {
+                            return validator.isEmpty
+                                ? 'Ingrese la constraseña'
+                                : null;
+                          },
+                          onChangedFunc: (val) {
+                            setState(() => _user.password = val);
+                          }),
+                    ],
+                  ),
+                )),
+              ),
+            ),
+            RaisedButton(
+              padding: const EdgeInsets.all(0.0),
+              child: Container(
+                height: 50,
+                width: 340,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  gradient: LinearGradient(colors: [
+                    kMainGreenColor.withOpacity(1),
+                    kMainGreenColor.withOpacity(.6)
+                  ]),
+                ),
+                child: Center(
+                  child: Text(
+                    "Registrar",
+                    style: TextStyle(
+                        color: kWhiteColor, fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ),
+              onPressed: () async {
+                if (formKey.currentState.validate()) {
+                  dynamic result = await _auth.registerWithEmailAndPassword(_user.email, _user.password);
+                  if (result == null) {
+                    setState(() => error = 'Introduzca un correo valido');
+                  } else {
+                    Navigator.pushReplacementNamed(context, Wrapper.routeName);
+                  }
+                } else {
+                  print("NO");
+                }
+              },
+            ),
+          ],
+        ));
   }
 }

@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "984030766021",
+    "firebase_url": "https://asclepio-5ae02.firebaseio.com",
+    "project_id": "asclepio-5ae02",
+    "storage_bucket": "asclepio-5ae02.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:984030766021:android:2bceaec567d437da3be1ac",
+        "android_client_info": {
+          "package_name": "com.asclepio_doctor_flutter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "984030766021-hs397lqhnmnrt082tsgbr8ctiue73c1c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCKKY5en7jBSesUuoUB-h--z8vzpyPJiTA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "984030766021-hs397lqhnmnrt082tsgbr8ctiue73c1c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
